@@ -6,43 +6,63 @@
 
 @layer base {
   body {
-    @apply bg-background text-white font-sans antialiased min-h-screen overflow-x-hidden;
-    background-image: 
-      radial-gradient(circle at 15% 50%, rgba(139, 92, 246, 0.08), transparent 25%),
-      radial-gradient(circle at 85% 30%, rgba(59, 130, 246, 0.08), transparent 25%);
+    @apply bg-background text-white font-sans antialiased min-h-screen overflow-x-hidden selection:bg-primary/30 selection:text-white;
   }
 }
 
 @layer components {
+  /* Ultra-premium glassmorphism */
   .glass-panel {
-    @apply bg-surface/40 backdrop-blur-xl border border-border rounded-2xl shadow-2xl;
+    @apply relative bg-surface backdrop-blur-2xl border border-border rounded-2xl shadow-[0_8px_32px_rgba(0,0,0,0.5)] overflow-hidden;
   }
   
+  /* Input styling with glow focus */
   .glass-input {
-    @apply w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white placeholder-muted focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all;
+    @apply w-full bg-black/40 border border-white/10 rounded-xl px-4 py-3 text-white placeholder-muted focus:outline-none focus:ring-1 focus:ring-primary/50 focus:border-primary/50 focus:shadow-[0_0_20px_rgba(59,130,246,0.15)] transition-all duration-300;
   }
 
-  .premium-button {
-    @apply relative overflow-hidden rounded-xl font-medium px-6 py-3 transition-all hover:scale-[1.02] active:scale-[0.98] disabled:opacity-50 disabled:hover:scale-100;
+  /* Animated gradient border wrapper */
+  .animated-border {
+    @apply relative rounded-2xl overflow-hidden p-[1px];
   }
-  
-  .premium-button-primary {
-    @apply premium-button bg-gradient-to-r from-primary to-accent text-white shadow-[0_0_20px_rgba(59,130,246,0.3)] hover:shadow-[0_0_30px_rgba(59,130,246,0.5)];
+  .animated-border::before {
+    content: '';
+    @apply absolute inset-[-100%] animate-border-spin w-[300%] h-[300%] opacity-0 transition-opacity duration-500;
+    background: conic-gradient(from 0deg, transparent 0%, transparent 60%, theme('colors.primary.DEFAULT') 80%, theme('colors.accent.DEFAULT') 100%);
+  }
+  .animated-border:hover::before {
+    @apply opacity-100;
+  }
+  .animated-border > div {
+    @apply relative h-full w-full bg-surface backdrop-blur-2xl rounded-2xl overflow-hidden;
+  }
+
+  /* Noise Overlay */
+  .noise-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    pointer-events: none;
+    z-index: 50;
+    opacity: 0.03;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
   }
 }
 
 /* Custom Scrollbar */
 ::-webkit-scrollbar {
-  width: 8px;
+  width: 6px;
 }
 
 ::-webkit-scrollbar-track {
-  background: rgba(0, 0, 0, 0.2);
+  background: transparent;
 }
 
 ::-webkit-scrollbar-thumb {
   background: rgba(255, 255, 255, 0.1);
-  border-radius: 4px;
+  border-radius: 10px;
 }
 
 ::-webkit-scrollbar-thumb:hover {

@@ -4,6 +4,16 @@ import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContai
 import { ArrowUpRight, ArrowDownRight, Wallet, Activity, CreditCard } from 'lucide-react';
 import { useStore } from '../store/useStore';
 import { cn } from '../lib/utils';
+import { TiltCard } from '../components/ui/TiltCard';
+import { AnimatedCounter } from '../components/ui/AnimatedCounter';
+import { MagneticButton } from '../components/ui/MagneticButton';
+
+const pageTransition = {
+  initial: { opacity: 0, y: 20 },
+  animate: { opacity: 1, y: 0 },
+  exit: { opacity: 0, y: -20, filter: 'blur(10px)' },
+  transition: { duration: 0.4, ease: "easeOut" }
+};
 
 const container = {
   hidden: { opacity: 0 },
@@ -14,8 +24,22 @@ const container = {
 };
 
 const item = {
-  hidden: { opacity: 0, y: 20 },
-  show: { opacity: 1, y: 0, transition: { type: "spring", stiffness: 300, damping: 24 } }
+  hidden: { opacity: 0, scale: 0.95, y: 20 },
+  show: { opacity: 1, scale: 1, y: 0, transition: { type: "spring", stiffness: 300, damping: 24 } }
+};
+
+const CustomTooltip = ({ active, payload, label }) => {
+  if (active && payload && payload.length) {
+    return (
+      <div className="glass-panel p-3 border border-white/20 shadow-[0_0_30px_rgba(59,130,246,0.3)]">
+        <p className="text-muted text-xs uppercase tracking-wider mb-1">{label}</p>
+        <p className="text-white font-bold text-lg">
+          ${payload[0].value.toFixed(2)}
+        </p>
+      </div>
+    );
+  }
+  return null;
 };
 
 export default function Dashboard() {
@@ -34,7 +58,6 @@ export default function Dashboard() {
     if (success) setAmount('');
   };
 
-  // Prepare chart data from transactions
   const chartData = summary?.transactions?.slice().reverse().map((tx, i) => ({
     name: `Tx ${i+1}`,
     amount: tx.type === 'credit' ? Math.abs(tx.amount) : -Math.abs(tx.amount),
@@ -42,21 +65,20 @@ export default function Dashboard() {
   })) || [];
 
   return (
-    <div className="p-8 max-w-7xl mx-auto">
-      <motion.div 
-        initial={{ opacity: 0, y: -20 }}
-        animate={{ opacity: 1, y: 0 }}
-        className="mb-8"
-      >
-        <h1 className="text-3xl font-bold text-white mb-2">Overview</h1>
-        <p className="text-muted">Track your balance and submit new transactions.</p>
-      </motion.div>
+    <motion.div 
+      {...pageTransition}
+      className="p-8 max-w-7xl mx-auto pt-24 md:pt-8"
+    >
+      <div className="mb-10">
+        <h1 className="text-4xl font-bold text-white mb-2 tracking-tight">Overview</h1>
+        <p className="text-muted text-lg">Welcome back. Here's what's happening today.</p>
+      </div>
 
       {isSummaryLoading && !summary ? (
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 animate-pulse">
-          <div className="h-32 bg-white/5 rounded-2xl"></div>
-          <div className="h-32 bg-white/5 rounded-2xl"></div>
-          <div className="h-32 bg-white/5 rounded-2xl"></div>
+          <div className="h-32 bg-white/5 rounded-2xl border border-white/10"></div>
+          <div className="h-32 bg-white/5 rounded-2xl border border-white/10"></div>
+          <div className="h-[400px] bg-white/5 rounded-2xl border border-white/10 lg:row-span-2"></div>
         </div>
       ) : (
         <motion.div 
@@ -66,127 +88,171 @@ export default function Dashboard() {
           className="grid grid-cols-1 lg:grid-cols-3 gap-6"
         >
           {/* Metrics */}
-          <motion.div variants={item} className="glass-panel p-6 flex flex-col justify-between">
-            <div className="flex justify-between items-start">
-              <div>
-                <p className="text-sm font-medium text-muted mb-1">Total Volume</p>
-                <h3 className="text-3xl font-bold text-white">
-                  ${summary?.total_amount?.toFixed(2) || '0.00'}
-                </h3>
+          <motion.div variants={item}>
+            <TiltCard className="h-full">
+              <div className="glass-panel p-6 flex flex-col justify-between h-full bg-gradient-to-br from-white/5 to-transparent">
+                <div className="flex justify-between items-start">
+                  <div>
+                    <p className="text-sm font-medium text-muted mb-1 uppercase tracking-widest">Total Volume</p>
+                    <h3 className="text-4xl font-bold text-white tracking-tight">
+                      <AnimatedCounter value={summary?.total_amount || 0} />
+                    </h3>
+                  </div>
+                  <div className="p-3 rounded-xl bg-primary/20 border border-primary/30 shadow-[0_0_20px_rgba(59,130,246,0.3)]">
+                    <Wallet className="w-6 h-6 text-primary" />
+                  </div>
+                </div>
+                <div className="mt-6 flex items-center text-sm text-emerald-400 bg-emerald-400/10 w-max px-3 py-1 rounded-full border border-emerald-400/20">
+                  <ArrowUpRight className="w-4 h-4 mr-1" />
+                  <span className="font-medium">Healthy Account</span>
+                </div>
               </div>
-              <div className="p-3 rounded-xl bg-primary/10">
-                <Wallet className="w-5 h-5 text-primary" />
-              </div>
-            </div>
-            <div className="mt-4 flex items-center text-sm text-emerald-400">
-              <ArrowUpRight className="w-4 h-4 mr-1" />
-              <span>Healthy account</span>
-            </div>
+            </TiltCard>
           </motion.div>
 
-          <motion.div variants={item} className="glass-panel p-6 flex flex-col justify-between">
-            <div className="flex justify-between items-start">
-              <div>
-                <p className="text-sm font-medium text-muted mb-1">Total Transactions</p>
-                <h3 className="text-3xl font-bold text-white">
-                  {summary?.transaction_count || 0}
-                </h3>
+          <motion.div variants={item}>
+            <TiltCard className="h-full">
+              <div className="glass-panel p-6 flex flex-col justify-between h-full bg-gradient-to-br from-white/5 to-transparent">
+                <div className="flex justify-between items-start">
+                  <div>
+                    <p className="text-sm font-medium text-muted mb-1 uppercase tracking-widest">Transactions</p>
+                    <h3 className="text-4xl font-bold text-white tracking-tight">
+                      <AnimatedCounter value={summary?.transaction_count || 0} />
+                    </h3>
+                  </div>
+                  <div className="p-3 rounded-xl bg-accent/20 border border-accent/30 shadow-[0_0_20px_rgba(139,92,246,0.3)]">
+                    <Activity className="w-6 h-6 text-accent" />
+                  </div>
+                </div>
               </div>
-              <div className="p-3 rounded-xl bg-accent/10">
-                <Activity className="w-5 h-5 text-accent" />
-              </div>
-            </div>
+            </TiltCard>
           </motion.div>
 
           {/* Transaction Form */}
-          <motion.div variants={item} className="glass-panel p-6 lg:row-span-2">
-            <h3 className="text-lg font-bold text-white mb-6 flex items-center gap-2">
-              <CreditCard className="w-5 h-5 text-primary" />
-              New Transaction
-            </h3>
-            <form onSubmit={handleTransaction} className="space-y-4">
-              <div>
-                <label className="block text-sm font-medium text-muted mb-2">Amount ($)</label>
-                <input 
-                  type="number" 
-                  step="0.01"
-                  value={amount}
-                  onChange={(e) => setAmount(e.target.value)}
-                  placeholder="0.00"
-                  className="glass-input text-2xl font-bold"
-                  required
-                />
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-muted mb-2">Type</label>
-                <div className="grid grid-cols-2 gap-3">
-                  <button
-                    type="button"
-                    onClick={() => setType('credit')}
-                    className={cn(
-                      "py-3 px-4 rounded-xl font-medium transition-all text-sm flex items-center justify-center gap-2 border",
-                      type === 'credit' 
-                        ? "bg-emerald-500/10 text-emerald-400 border-emerald-500/50" 
-                        : "bg-white/5 text-muted border-transparent hover:bg-white/10"
-                    )}
+          <motion.div variants={item} className="lg:row-span-2 flex flex-col">
+            <TiltCard className="flex-1">
+              <div className="glass-panel p-8 flex flex-col h-full bg-gradient-to-b from-white/5 to-transparent relative overflow-hidden">
+                
+                {/* Decorative background glow */}
+                <div className="absolute -top-24 -right-24 w-48 h-48 bg-primary/20 rounded-full blur-[60px] pointer-events-none"></div>
+
+                <h3 className="text-xl font-bold text-white mb-8 flex items-center gap-3">
+                  <div className="p-2 bg-white/10 rounded-lg border border-white/20">
+                    <CreditCard className="w-5 h-5 text-white" />
+                  </div>
+                  New Transaction
+                </h3>
+
+                <form onSubmit={handleTransaction} className="flex-1 flex flex-col">
+                  <div className="flex-1 space-y-6">
+                    <div className="relative group">
+                      <label className="block text-xs font-bold text-muted mb-2 uppercase tracking-widest">Amount (USD)</label>
+                      <div className="relative">
+                        <span className="absolute left-4 top-1/2 -translate-y-1/2 text-white/50 font-bold text-xl">$</span>
+                        <input 
+                          type="number" 
+                          step="0.01"
+                          value={amount}
+                          onChange={(e) => setAmount(e.target.value)}
+                          placeholder="0.00"
+                          className="glass-input text-3xl font-bold pl-10 h-16 bg-black/60 shadow-inner"
+                          required
+                        />
+                      </div>
+                    </div>
+                    
+                    <div>
+                      <label className="block text-xs font-bold text-muted mb-2 uppercase tracking-widest">Type</label>
+                      <div className="grid grid-cols-2 gap-4">
+                        <button
+                          type="button"
+                          onClick={() => setType('credit')}
+                          className={cn(
+                            "h-14 rounded-xl font-bold transition-all text-sm flex items-center justify-center gap-2 border shadow-lg relative overflow-hidden",
+                            type === 'credit' 
+                              ? "bg-emerald-500/20 text-emerald-400 border-emerald-500/50 shadow-[0_0_20px_rgba(16,185,129,0.2)]" 
+                              : "bg-white/5 text-muted border-transparent hover:bg-white/10 hover:text-white"
+                          )}
+                        >
+                          {type === 'credit' && <motion.div layoutId="type-glow" className="absolute inset-0 bg-emerald-500/10 blur-md" />}
+                          <ArrowUpRight className="w-5 h-5 relative z-10" /> <span className="relative z-10">Credit</span>
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => setType('debit')}
+                          className={cn(
+                            "h-14 rounded-xl font-bold transition-all text-sm flex items-center justify-center gap-2 border shadow-lg relative overflow-hidden",
+                            type === 'debit' 
+                              ? "bg-rose-500/20 text-rose-400 border-rose-500/50 shadow-[0_0_20px_rgba(244,63,94,0.2)]" 
+                              : "bg-white/5 text-muted border-transparent hover:bg-white/10 hover:text-white"
+                          )}
+                        >
+                          {type === 'debit' && <motion.div layoutId="type-glow" className="absolute inset-0 bg-rose-500/10 blur-md" />}
+                          <ArrowDownRight className="w-5 h-5 relative z-10" /> <span className="relative z-10">Debit</span>
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+
+                  <MagneticButton 
+                    disabled={isSubmitting || !amount}
+                    className="w-full h-14 bg-white text-black font-bold rounded-xl mt-8 disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-200 transition-colors shadow-[0_0_30px_rgba(255,255,255,0.2)]"
                   >
-                    <ArrowUpRight className="w-4 h-4" /> Credit
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => setType('debit')}
-                    className={cn(
-                      "py-3 px-4 rounded-xl font-medium transition-all text-sm flex items-center justify-center gap-2 border",
-                      type === 'debit' 
-                        ? "bg-rose-500/10 text-rose-400 border-rose-500/50" 
-                        : "bg-white/5 text-muted border-transparent hover:bg-white/10"
-                    )}
-                  >
-                    <ArrowDownRight className="w-4 h-4" /> Debit
-                  </button>
-                </div>
+                    {isSubmitting ? 'Processing safely...' : 'Submit Now'}
+                  </MagneticButton>
+                </form>
               </div>
-              <button 
-                type="submit" 
-                disabled={isSubmitting || !amount}
-                className="premium-button-primary w-full mt-6"
-              >
-                {isSubmitting ? 'Processing...' : 'Submit Transaction'}
-              </button>
-            </form>
+            </TiltCard>
           </motion.div>
 
           {/* Chart */}
-          <motion.div variants={item} className="glass-panel p-6 lg:col-span-2 h-80">
-            <h3 className="text-sm font-medium text-muted mb-6">Activity Timeline</h3>
-            {chartData.length > 0 ? (
-              <ResponsiveContainer width="100%" height="100%">
-                <AreaChart data={chartData} margin={{ top: 0, right: 0, left: -20, bottom: 0 }}>
-                  <defs>
-                    <linearGradient id="colorAmount" x1="0" y1="0" x2="0" y2="1">
-                      <stop offset="5%" stopColor="#3b82f6" stopOpacity={0.3}/>
-                      <stop offset="95%" stopColor="#3b82f6" stopOpacity={0}/>
-                    </linearGradient>
-                  </defs>
-                  <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.05)" vertical={false} />
-                  <XAxis dataKey="name" stroke="#8b8b9b" fontSize={12} tickLine={false} axisLine={false} />
-                  <YAxis stroke="#8b8b9b" fontSize={12} tickLine={false} axisLine={false} tickFormatter={(val) => `$${val}`} />
-                  <Tooltip 
-                    contentStyle={{ backgroundColor: '#12121a', borderColor: 'rgba(255,255,255,0.1)', borderRadius: '12px' }}
-                    itemStyle={{ color: '#fff' }}
-                  />
-                  <Area type="monotone" dataKey="rawAmount" stroke="#3b82f6" strokeWidth={3} fillOpacity={1} fill="url(#colorAmount)" />
-                </AreaChart>
-              </ResponsiveContainer>
-            ) : (
-              <div className="h-full flex items-center justify-center text-muted">
-                No transaction data available yet.
-              </div>
-            )}
+          <motion.div variants={item} className="glass-panel p-8 lg:col-span-2 h-[400px] flex flex-col relative overflow-hidden">
+            {/* Ambient glow behind chart */}
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-3/4 h-3/4 bg-primary/20 rounded-full blur-[100px] pointer-events-none"></div>
+
+            <h3 className="text-sm font-bold text-muted mb-8 uppercase tracking-widest relative z-10">Activity Timeline</h3>
+            
+            <div className="flex-1 relative z-10">
+              {chartData.length > 0 ? (
+                <ResponsiveContainer width="100%" height="100%">
+                  <AreaChart data={chartData} margin={{ top: 10, right: 0, left: -20, bottom: 0 }}>
+                    <defs>
+                      <linearGradient id="colorAmount" x1="0" y1="0" x2="0" y2="1">
+                        <stop offset="5%" stopColor="#3b82f6" stopOpacity={0.8}/>
+                        <stop offset="95%" stopColor="#3b82f6" stopOpacity={0}/>
+                      </linearGradient>
+                      <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
+                        <feGaussianBlur stdDeviation="4" result="blur" />
+                        <feComposite in="SourceGraphic" in2="blur" operator="over" />
+                      </filter>
+                    </defs>
+                    <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.05)" vertical={false} />
+                    <XAxis dataKey="name" stroke="#8b8b9b" fontSize={12} tickLine={false} axisLine={false} dy={10} />
+                    <YAxis stroke="#8b8b9b" fontSize={12} tickLine={false} axisLine={false} tickFormatter={(val) => `$${val}`} dx={-10} />
+                    <Tooltip content={<CustomTooltip />} cursor={{ stroke: 'rgba(255,255,255,0.1)', strokeWidth: 2 }} />
+                    <Area 
+                      type="monotone" 
+                      dataKey="rawAmount" 
+                      stroke="#3b82f6" 
+                      strokeWidth={4} 
+                      fillOpacity={1} 
+                      fill="url(#colorAmount)"
+                      filter="url(#glow)"
+                      animationDuration={1500}
+                      animationEasing="ease-out"
+                    />
+                  </AreaChart>
+                </ResponsiveContainer>
+              ) : (
+                <div className="h-full flex items-center justify-center text-muted border border-dashed border-white/10 rounded-xl">
+                  No transaction data available yet.
+                </div>
+              )}
+            </div>
           </motion.div>
 
         </motion.div>
       )}
-    </div>
+    </motion.div>
   );
 }
