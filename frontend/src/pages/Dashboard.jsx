@@ -267,7 +267,7 @@ export default function Dashboard() {
                 {summary?.transactions?.length > 0 ? (
                   summary.transactions.slice().reverse().map((tx, idx) => (
                     <motion.div
-                      key={tx.transaction_id || idx}
+                      key={tx.transactionId || idx}
                       initial={{ opacity: 0, y: -20, scale: 0.95 }}
                       animate={{ opacity: 1, y: 0, scale: 1 }}
                       exit={{ opacity: 0, scale: 0.95 }}
@@ -286,7 +286,7 @@ export default function Dashboard() {
                             {tx.type === 'credit' ? 'Deposit' : 'Withdrawal'}
                           </p>
                           <p className="text-xs text-muted tracking-wider uppercase">
-                            {new Date(tx.timestamp).toLocaleTimeString()} • {tx.transaction_id.slice(0,8)}...
+                            {new Date(tx.timestamp).toLocaleTimeString()} • {tx.transactionId?.slice(0,8)}...
                           </p>
                         </div>
                       </div>
