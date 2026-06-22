@@ -4,7 +4,7 @@ import { Toaster } from 'react-hot-toast';
 import { AnimatePresence } from 'framer-motion';
 import Dashboard from './pages/Dashboard';
 import Leaderboard from './pages/Leaderboard';
-import BackgroundEffect from './components/ui/BackgroundEffect';
+import Cinematic3DBackground from './components/ui/Cinematic3DBackground';
 import ParticlesBackground from './components/ui/ParticlesBackground';
 import { FloatingDock } from './components/ui/FloatingDock';
 
@@ -24,7 +24,7 @@ function AnimatedRoutes() {
 function App() {
   return (
     <Router>
-      <BackgroundEffect />
+      <Cinematic3DBackground />
       <ParticlesBackground />
       <div className="flex flex-col min-h-screen relative pb-32">
         <main className="flex-1 w-full relative max-w-7xl mx-auto px-4">

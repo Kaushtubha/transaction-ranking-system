@@ -13,17 +13,17 @@
 @layer components {
   /* Ultra-premium glassmorphism */
   .glass-panel {
-    @apply relative bg-surface backdrop-blur-2xl border border-border rounded-2xl shadow-[0_8px_32px_rgba(0,0,0,0.5)] overflow-hidden;
+    @apply relative bg-surface backdrop-blur-3xl border border-border rounded-2xl shadow-[0_8px_32px_rgba(0,0,0,0.8),inset_0_0_32px_rgba(255,255,255,0.02)] overflow-hidden;
   }
   
   /* Input styling with glow focus */
   .glass-input {
-    @apply w-full bg-black/40 border border-white/10 rounded-xl px-4 py-3 text-white placeholder-muted focus:outline-none focus:ring-1 focus:ring-primary/50 focus:border-primary/50 focus:shadow-[0_0_20px_rgba(59,130,246,0.15)] transition-all duration-300;
+    @apply w-full bg-black/40 border border-white/10 rounded-xl px-4 py-3 text-white placeholder-muted focus:outline-none focus:ring-1 focus:ring-primary/50 focus:border-primary/50 focus:shadow-[0_0_20px_rgba(59,130,246,0.3)] transition-all duration-300;
   }
 
   /* Animated gradient border wrapper */
   .animated-border {
-    @apply relative rounded-2xl overflow-hidden p-[1px];
+    @apply relative rounded-2xl overflow-hidden p-[1px] shadow-[0_0_40px_rgba(0,0,0,0.5)];
   }
   .animated-border::before {
     content: '';
@@ -35,7 +35,7 @@
     @apply opacity-100;
   }
   .animated-border > div {
-    @apply relative h-full w-full bg-surface backdrop-blur-2xl rounded-2xl overflow-hidden;
+    @apply relative h-full w-full bg-black/50 backdrop-blur-3xl rounded-2xl overflow-hidden;
   }
 
   /* Noise Overlay */
@@ -47,8 +47,34 @@
     height: 100vh;
     pointer-events: none;
     z-index: 50;
-    opacity: 0.03;
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+    opacity: 0.05;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+  }
+
+  /* 3D Perspective Grid */
+  .perspective-container {
+    perspective: 1000px;
+    transform-style: preserve-3d;
+  }
+  
+  .grid-floor {
+    position: absolute;
+    width: 200vw;
+    height: 200vh;
+    left: -50vw;
+    top: 20vh;
+    background-image: theme('backgroundImage.grid-pattern');
+    background-size: 64px 64px;
+    transform: rotateX(75deg);
+    transform-origin: center top;
+    animation: grid-move 2s linear infinite;
+    mask-image: linear-gradient(to top, rgba(0,0,0,1) 0%, rgba(0,0,0,0) 80%);
+    -webkit-mask-image: linear-gradient(to top, rgba(0,0,0,1) 0%, rgba(0,0,0,0) 80%);
+  }
+
+  @keyframes grid-move {
+    0% { transform: rotateX(75deg) translateY(0); }
+    100% { transform: rotateX(75deg) translateY(64px); }
   }
 }
 
