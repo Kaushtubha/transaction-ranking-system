@@ -27,7 +27,8 @@
   }
   .animated-border::before {
     content: '';
-    @apply absolute inset-[-100%] animate-border-spin w-[300%] h-[300%] opacity-0 transition-opacity duration-500;
+    @apply absolute inset-[-100%] w-[300%] h-[300%] opacity-0 transition-opacity duration-500;
+    animation: border-spin 4s linear infinite;
     background: conic-gradient(from 0deg, transparent 0%, transparent 60%, theme('colors.primary.DEFAULT') 80%, theme('colors.accent.DEFAULT') 100%);
   }
   .animated-border:hover::before {
