@@ -1,0 +1,124 @@
+{
+  "info": {
+    "name": "FinRank API",
+    "description": "Postman collection for testing the FinRank API backend.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Submit Transaction (Credit)",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Idempotency-Key",
+            "value": "{{$guid}}",
+            "type": "text"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"transactionId\": \"{{$guid}}\",\n  \"userId\": \"user_123\",\n  \"amount\": 500.00,\n  \"timestamp\": \"2023-10-25T14:30:00Z\",\n  \"type\": \"credit\",\n  \"metadata\": { \"source\": \"postman\" }\n}"
+        },
+        "url": {
+          "raw": "http://127.0.0.1:8000/transaction",
+          "protocol": "http",
+          "host": [
+            "127",
+            "0",
+            "0",
+            "1"
+          ],
+          "port": "8000",
+          "path": [
+            "transaction"
+          ]
+        }
+      }
+    },
+    {
+      "name": "Submit Transaction (Debit)",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Idempotency-Key",
+            "value": "{{$guid}}",
+            "type": "text"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"transactionId\": \"{{$guid}}\",\n  \"userId\": \"user_123\",\n  \"amount\": 50.00,\n  \"timestamp\": \"2023-10-25T15:30:00Z\",\n  \"type\": \"debit\",\n  \"metadata\": { \"source\": \"postman\" }\n}"
+        },
+        "url": {
+          "raw": "http://127.0.0.1:8000/transaction",
+          "protocol": "http",
+          "host": [
+            "127",
+            "0",
+            "0",
+            "1"
+          ],
+          "port": "8000",
+          "path": [
+            "transaction"
+          ]
+        }
+      }
+    },
+    {
+      "name": "Get User Summary",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://127.0.0.1:8000/summary/user_123",
+          "protocol": "http",
+          "host": [
+            "127",
+            "0",
+            "0",
+            "1"
+          ],
+          "port": "8000",
+          "path": [
+            "summary",
+            "user_123"
+          ]
+        }
+      }
+    },
+    {
+      "name": "Get Ranking",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://127.0.0.1:8000/ranking",
+          "protocol": "http",
+          "host": [
+            "127",
+            "0",
+            "0",
+            "1"
+          ],
+          "port": "8000",
+          "path": [
+            "ranking"
+          ]
+        }
+      }
+    }
+  ]
+}
