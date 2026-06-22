@@ -44,7 +44,8 @@ async def test_concurrent_transactions_idempotency():
     async def make_request():
         # Use httpx.AsyncClient to simulate concurrent calls directly against the test client is tricky,
         # but TestClient is synchronous. Let's use httpx with an ASGI transport for the async test.
-        async with httpx.AsyncClient(app=app, base_url="http://test") as client:
+        transport = httpx.ASGITransport(app=app)
+        async with httpx.AsyncClient(transport=transport, base_url="http://test") as client:
             return await client.post("/transaction", json=payload, headers=headers)
 
     # Fire 5 requests concurrently
@@ -66,7 +67,8 @@ async def test_concurrent_transactions_idempotency():
     assert success_count >= 1
 
     # Check DB state
+    from sqlalchemy import text
     db = SessionLocal()
-    txs = db.execute("SELECT count(*) FROM transactions WHERE user_id = 'user_concurrent'").scalar()
+    txs = db.execute(text("SELECT count(*) FROM transactions WHERE user_id = 'user_concurrent'")).scalar()
     assert txs == 1, "Only one transaction should have been saved to the database"
     db.close()

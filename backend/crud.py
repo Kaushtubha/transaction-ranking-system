@@ -18,7 +18,8 @@ def check_idempotency(db: Session, idempotency_key: str, user_id: str):
     
     if record:
         # Check TTL
-        if datetime.now(timezone.utc) - record.created_at < timedelta(hours=IDEMPOTENCY_TTL_HOURS):
+        created_at = record.created_at.replace(tzinfo=timezone.utc) if record.created_at.tzinfo is None else record.created_at
+        if datetime.now(timezone.utc) - created_at < timedelta(hours=IDEMPOTENCY_TTL_HOURS):
             return record.response_body
     return None
 
