@@ -7,6 +7,7 @@ import { cn } from '../lib/utils';
 import { TiltCard } from '../components/ui/TiltCard';
 import { AnimatedCounter } from '../components/ui/AnimatedCounter';
 import { MagneticButton } from '../components/ui/MagneticButton';
+import { AICore } from '../components/ui/AICore';
 
 const pageTransition = {
   initial: { opacity: 0, y: 20 },
@@ -67,11 +68,16 @@ export default function Dashboard() {
   return (
     <motion.div 
       {...pageTransition}
-      className="p-8 max-w-7xl mx-auto pt-24 md:pt-8"
+      className="pt-12 md:pt-16 pb-32"
     >
-      <div className="mb-10">
-        <h1 className="text-4xl font-bold text-white mb-2 tracking-tight">Overview</h1>
-        <p className="text-muted text-lg">Welcome back. Here's what's happening today.</p>
+      <div className="text-center mb-16 relative">
+        <AICore />
+        <h1 className="text-5xl md:text-6xl font-black text-transparent bg-clip-text bg-gradient-to-b from-white to-white/40 mb-4 tracking-tighter">
+          Financial Intelligence
+        </h1>
+        <p className="text-muted text-lg max-w-2xl mx-auto leading-relaxed">
+          Monitor your activity and execute transactions through our secure, high-performance neural network.
+        </p>
       </div>
 
       {isSummaryLoading && !summary ? (

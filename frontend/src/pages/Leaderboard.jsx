@@ -35,15 +35,17 @@ export default function Leaderboard() {
   return (
     <motion.div 
       {...pageTransition}
-      className="p-8 max-w-5xl mx-auto pt-24 md:pt-8"
+      className="pt-12 md:pt-16 max-w-5xl mx-auto pb-32"
     >
-      <div className="mb-10 text-center md:text-left relative">
-        <div className="absolute -top-10 -left-10 w-32 h-32 bg-accent/30 rounded-full blur-[60px] pointer-events-none"></div>
-        <h1 className="text-4xl font-bold text-white mb-2 flex items-center justify-center md:justify-start gap-3 tracking-tight">
-          <Trophy className="text-accent w-8 h-8 drop-shadow-[0_0_15px_rgba(139,92,246,0.5)]" /> 
+      <div className="mb-16 text-center relative">
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-64 h-64 bg-accent/20 rounded-full blur-[80px] pointer-events-none"></div>
+        <h1 className="text-5xl md:text-6xl font-black text-transparent bg-clip-text bg-gradient-to-b from-white to-white/40 mb-4 flex items-center justify-center gap-4 tracking-tighter">
+          <Trophy className="text-accent w-10 h-10 drop-shadow-[0_0_20px_rgba(139,92,246,0.6)]" /> 
           Global Rankings
         </h1>
-        <p className="text-muted text-lg">Fairness enforced by a multi-factor algorithm.</p>
+        <p className="text-muted text-lg max-w-2xl mx-auto leading-relaxed">
+          Fairness enforced by our advanced multi-factor machine learning algorithm.
+        </p>
       </div>
 
       {isRankingLoading ? (
