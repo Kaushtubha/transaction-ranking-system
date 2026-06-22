@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import { ArrowUpRight, ArrowDownRight, Wallet, Activity, CreditCard } from 'lucide-react';
 import { useStore } from '../store/useStore';
@@ -72,7 +72,7 @@ export default function Dashboard() {
     >
       <div className="text-center mb-16 relative">
         <AICore />
-        <h1 className="text-5xl md:text-6xl font-black text-transparent bg-clip-text bg-gradient-to-b from-white to-white/40 mb-4 tracking-tighter">
+        <h1 className="text-5xl md:text-6xl font-black font-display text-transparent bg-clip-text bg-gradient-to-b from-white to-white/40 mb-4 tracking-tighter">
           Financial Intelligence
         </h1>
         <p className="text-muted text-lg max-w-2xl mx-auto leading-relaxed">
@@ -254,6 +254,56 @@ export default function Dashboard() {
                   No transaction data available yet.
                 </div>
               )}
+            </div>
+          </motion.div>
+
+          {/* Recent Activity Feed */}
+          <motion.div variants={item} className="lg:col-span-3 mt-8">
+            <h3 className="text-lg font-display font-bold text-white mb-6 flex items-center gap-2">
+              <Activity className="w-5 h-5 text-primary" /> Live Activity Feed
+            </h3>
+            <div className="space-y-3">
+              <AnimatePresence initial={false}>
+                {summary?.transactions?.length > 0 ? (
+                  summary.transactions.slice().reverse().map((tx, idx) => (
+                    <motion.div
+                      key={tx.transaction_id || idx}
+                      initial={{ opacity: 0, y: -20, scale: 0.95 }}
+                      animate={{ opacity: 1, y: 0, scale: 1 }}
+                      exit={{ opacity: 0, scale: 0.95 }}
+                      transition={{ type: "spring", stiffness: 300, damping: 25 }}
+                      className="glass-panel p-5 flex items-center justify-between hover:bg-white/5 transition-colors group"
+                    >
+                      <div className="flex items-center gap-4">
+                        <div className={cn(
+                          "w-12 h-12 rounded-xl flex items-center justify-center border shadow-inner",
+                          tx.type === 'credit' ? "bg-emerald-500/10 border-emerald-500/20 text-emerald-400" : "bg-rose-500/10 border-rose-500/20 text-rose-400"
+                        )}>
+                          {tx.type === 'credit' ? <ArrowUpRight className="w-6 h-6" /> : <ArrowDownRight className="w-6 h-6" />}
+                        </div>
+                        <div>
+                          <p className="font-bold text-white text-lg font-display">
+                            {tx.type === 'credit' ? 'Deposit' : 'Withdrawal'}
+                          </p>
+                          <p className="text-xs text-muted tracking-wider uppercase">
+                            {new Date(tx.timestamp).toLocaleTimeString()} • {tx.transaction_id.slice(0,8)}...
+                          </p>
+                        </div>
+                      </div>
+                      <div className={cn(
+                        "text-xl font-black font-display tracking-tight",
+                        tx.type === 'credit' ? "text-emerald-400" : "text-rose-400"
+                      )}>
+                        {tx.type === 'credit' ? '+' : '-'}${Math.abs(tx.amount).toFixed(2)}
+                      </div>
+                    </motion.div>
+                  ))
+                ) : (
+                  <div className="glass-panel p-8 text-center text-muted border-dashed border-white/10">
+                    Awaiting incoming transactions to build feed.
+                  </div>
+                )}
+              </AnimatePresence>
             </div>
           </motion.div>
 

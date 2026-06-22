@@ -39,7 +39,7 @@ export default function Leaderboard() {
     >
       <div className="mb-16 text-center relative">
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-64 h-64 bg-accent/20 rounded-full blur-[80px] pointer-events-none"></div>
-        <h1 className="text-5xl md:text-6xl font-black text-transparent bg-clip-text bg-gradient-to-b from-white to-white/40 mb-4 flex items-center justify-center gap-4 tracking-tighter">
+        <h1 className="text-5xl md:text-6xl font-black font-display text-transparent bg-clip-text bg-gradient-to-b from-white to-white/40 mb-4 flex items-center justify-center gap-4 tracking-tighter">
           <Trophy className="text-accent w-10 h-10 drop-shadow-[0_0_20px_rgba(139,92,246,0.6)]" /> 
           Global Rankings
         </h1>
@@ -57,7 +57,7 @@ export default function Leaderboard() {
       ) : rankings.length === 0 ? (
         <div className="glass-panel p-16 text-center flex flex-col items-center justify-center border-dashed border-2 border-white/10 bg-transparent">
           <Trophy className="w-16 h-16 text-white/10 mb-6" />
-          <h2 className="text-2xl font-bold text-white mb-2 tracking-tight">No Rankings Yet</h2>
+          <h2 className="text-2xl font-bold font-display text-white mb-2 tracking-tight">No Rankings Yet</h2>
           <p className="text-muted max-w-sm">Submit some transactions on the dashboard to populate the leaderboard.</p>
         </div>
       ) : (

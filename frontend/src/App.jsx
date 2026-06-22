@@ -33,14 +33,29 @@ function App() {
         <FloatingDock />
       </div>
       <Toaster 
-        position="top-center"
+        position="top-center" 
         toastOptions={{
           style: {
             background: 'rgba(15, 15, 15, 0.8)',
+            backdropFilter: 'blur(16px)',
             color: '#fff',
             border: '1px solid rgba(255, 255, 255, 0.1)',
-            backdropFilter: 'blur(20px)',
-            boxShadow: '0 8px 32px rgba(0,0,0,0.5)',
+            borderRadius: '16px',
+            boxShadow: '0 8px 32px rgba(0, 0, 0, 0.5)',
+            fontFamily: 'Outfit, sans-serif',
+            fontSize: '14px',
+          },
+          success: {
+            iconTheme: {
+              primary: '#10b981',
+              secondary: '#fff',
+            },
+          },
+          error: {
+            iconTheme: {
+              primary: '#f43f5e',
+              secondary: '#fff',
+            },
           },
         }}
       />

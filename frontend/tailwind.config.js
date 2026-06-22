@@ -21,7 +21,8 @@ export default {
         muted: '#8b8b9b',
       },
       fontFamily: {
-        sans: ['Inter', 'sans-serif'],
+        sans: ['Outfit', 'sans-serif'],
+        display: ['Space Grotesk', 'sans-serif'],
       },
       backgroundImage: {
         'grid-pattern': "url(\"data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64' width='64' height='64' fill='none' stroke='rgb(59 130 246 / 0.3)' stroke-width='2'%3e%3cpath d='M0 .5H63.5V64'/%3e%3c/svg%3e\")",
