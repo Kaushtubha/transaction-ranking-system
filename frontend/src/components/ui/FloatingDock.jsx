@@ -10,7 +10,7 @@ export function FloatingDock() {
 
   const links = [
     { name: 'Dashboard', icon: LayoutDashboard, path: '/' },
-    { name: 'Leaderboard', icon: Trophy, path: '/leaderboard' },
+    { name: 'Leaderboard', icon: Trophy, path: '/ranking' },
   ];
 
   return (
@@ -20,9 +20,11 @@ export function FloatingDock() {
       className="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 flex items-end gap-4 rounded-2xl bg-black/40 border border-white/10 px-4 pb-3 pt-4 backdrop-blur-2xl shadow-[0_20px_40px_rgba(0,0,0,0.8)]"
     >
       <div className="flex items-end gap-2 pr-4 border-r border-white/10">
-        <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-primary to-accent flex items-center justify-center shadow-[0_0_20px_rgba(59,130,246,0.6)] animate-pulse">
-          <Activity className="w-6 h-6 text-white" />
-        </div>
+        <Link to="/summary">
+          <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-primary to-accent flex items-center justify-center shadow-[0_0_20px_rgba(59,130,246,0.6)] hover:scale-105 transition-transform cursor-pointer">
+            <Activity className="w-6 h-6 text-white" />
+          </div>
+        </Link>
       </div>
 
       {links.map((link) => (
@@ -30,9 +32,11 @@ export function FloatingDock() {
       ))}
 
       <div className="flex items-end gap-2 pl-4 border-l border-white/10">
-        <div className="w-12 h-12 rounded-full bg-white/10 flex items-center justify-center border border-white/20 hover:bg-white/20 transition-colors cursor-pointer group">
-          <Wallet className="w-5 h-5 text-white/80 group-hover:text-white" />
-        </div>
+        <Link to="/transaction">
+          <div className="w-12 h-12 rounded-full bg-white/10 flex items-center justify-center border border-white/20 hover:bg-white/20 transition-colors cursor-pointer group">
+            <Wallet className="w-5 h-5 text-white/80 group-hover:text-white" />
+          </div>
+        </Link>
       </div>
     </motion.div>
   );

@@ -5,11 +5,12 @@ import { Toaster } from 'react-hot-toast';
 
 import { R3FBackground } from './components/ui/R3FBackground';
 import { SmoothScroll } from './components/ui/SmoothScroll';
-import { TopNav } from './components/ui/TopNav';
+import { FloatingDock } from './components/ui/FloatingDock';
 
 import TransactionPage from './pages/TransactionPage';
 import SummaryPage from './pages/SummaryPage';
 import RankingPage from './pages/Leaderboard';
+import Dashboard from './pages/Dashboard';
 
 function AnimatedRoutes() {
   const location = useLocation();
@@ -17,9 +18,10 @@ function AnimatedRoutes() {
   return (
     <AnimatePresence mode="wait">
       <Routes location={location} key={location.pathname}>
-        <Route path="/" element={<TransactionPage />} />
+        <Route path="/" element={<Dashboard />} />
         <Route path="/summary" element={<SummaryPage />} />
         <Route path="/ranking" element={<RankingPage />} />
+        <Route path="/transaction" element={<TransactionPage />} />
       </Routes>
     </AnimatePresence>
   );
@@ -30,7 +32,7 @@ function App() {
     <BrowserRouter>
       <SmoothScroll />
       <R3FBackground />
-      <TopNav />
+      <FloatingDock />
       <main className="relative z-10 min-h-screen pt-24">
         <AnimatedRoutes />
       </main>
