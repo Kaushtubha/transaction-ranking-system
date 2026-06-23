@@ -1,27 +1,34 @@
-# Transaction Ranking System
+<div align="center">
+  <h1>Transaction Ranking System</h1>
 
-A robust, full-stack web application designed to process financial transactions, compute dynamic user rankings, and visualize activity through an immersive, dark-themed dashboard. 
+  <p>
+    <img src="https://img.shields.io/badge/REACT-18.x-61DAFB?style=for-the-badge&logo=react&logoColor=black" alt="React" />
+    <img src="https://img.shields.io/badge/TAILWIND_CSS-3.x-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white" alt="Tailwind CSS" />
+    <img src="https://img.shields.io/badge/FRAMER_MOTION-12.x-0055FF?style=for-the-badge&logo=framer&logoColor=white" alt="Framer Motion" />
+    <img src="https://img.shields.io/badge/FASTAPI-0.100+-009688?style=for-the-badge&logo=fastapi&logoColor=white" alt="FastAPI" />
+    <img src="https://img.shields.io/badge/PYTHON-3.9+-3776AB?style=for-the-badge&logo=python&logoColor=white" alt="Python" />
+    <img src="https://img.shields.io/badge/SQLITE-3-003B57?style=for-the-badge&logo=sqlite&logoColor=white" alt="SQLite" />
+  </p>
 
-The system leverages a FastAPI backend for high-performance API serving and a React frontend utilizing modern web technologies for a seamless, interactive user experience.
+  <p align="center">
+    A robust, full-stack web application designed to process financial transactions, compute dynamic user rankings, and visualize activity through an immersive, dark-themed dashboard. Inspired by premium modern interfaces, it features fluid cubic-bezier animations and optimized API data handling.
+  </p>
+</div>
+
+## 🚀 Live Demo
+
+- **Frontend URL:** [Add your deployed Frontend URL here]
+- **Backend URL:** [Add your deployed Backend URL here]
 
 ---
 
-## 🏗️ Architecture & Tech Stack
+## 🏗️ System Architecture
 
-### Frontend
-- **Framework:** React + Vite
-- **Styling:** Tailwind CSS
-- **State Management:** Zustand
-- **Animations & Interaction:** Framer Motion, GSAP, Lenis (Smooth Scrolling)
-- **3D Graphics & Backgrounds:** Three.js, React Three Fiber (`@react-three/fiber`, `@react-three/drei`)
-- **Data Visualization:** Recharts
-- **Routing:** React Router DOM
-
-### Backend
-- **Framework:** FastAPI (Python)
-- **Database:** SQLite with SQLAlchemy ORM
-- **Concurrency Protection:** Database Unique Constraints & Idempotency Keys
-- **Data Validation:** Pydantic
+```mermaid
+flowchart LR
+    A[Frontend: React + Vite] -- REST API + JSON --> B[Backend: FastAPI]
+    B -- SQLAlchemy ORM --> C[(SQLite Database)]
+```
 
 ---
 
@@ -47,7 +54,7 @@ To prevent race conditions (e.g., a user double-clicking "Submit" causing duplic
 
 ---
 
-## 🚀 Setup & Installation
+## 💻 Setup & Installation
 
 ### Prerequisites
 - Node.js (v18+)
