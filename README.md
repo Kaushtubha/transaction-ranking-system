@@ -17,8 +17,8 @@
 
 ## 🚀 Live Demo
 
-- **Frontend URL:** [Add your deployed Frontend URL here]
-- **Backend URL:** [Add your deployed Backend URL here]
+- **Frontend URL:** [https://transaction-ranking-system-five.vercel.app/](https://transaction-ranking-system-five.vercel.app/)
+- **Backend URL:** [https://transaction-ranking-api.onrender.com](https://transaction-ranking-api.onrender.com)
 
 ---
 
