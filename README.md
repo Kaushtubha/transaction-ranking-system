@@ -54,6 +54,35 @@ To prevent race conditions (e.g., a user double-clicking "Submit" causing duplic
 
 ---
 
+## 📁 Folder Structure
+
+```text
+transaction-ranking-system/
+├── backend/
+│   ├── crud.py               # Database operations & aggregations
+│   ├── database.py           # SQLAlchemy setup & connection
+│   ├── main.py               # FastAPI entry point & API routes
+│   ├── models.py             # SQLite database models
+│   ├── ranking.py            # Ranking algorithm logic
+│   ├── schemas.py            # Pydantic validation schemas
+│   └── requirements.txt      # Python dependencies
+├── frontend/
+│   ├── src/
+│   │   ├── components/ui/    # Reusable UI components & layouts
+│   │   ├── lib/              # Utility functions
+│   │   ├── pages/            # Dashboard, Summary, and Leaderboard views
+│   │   ├── store/            # Zustand global state (useStore.js)
+│   │   ├── App.jsx           # Router and application wrapper
+│   │   ├── index.css         # Tailwind, animations, custom scrollbars
+│   │   └── main.jsx          # React entry point
+│   ├── package.json          # NPM dependencies
+│   ├── tailwind.config.js    # Tailwind configuration
+│   └── vite.config.js        # Vite configuration
+└── README.md                 # Project documentation
+```
+
+---
+
 ## 💻 Setup & Installation
 
 ### Prerequisites
