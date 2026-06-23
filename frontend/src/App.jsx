@@ -3,7 +3,8 @@ import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom';
 import { AnimatePresence } from 'framer-motion';
 import { Toaster } from 'react-hot-toast';
 
-import { DeepSpaceBackground } from './components/ui/DeepSpaceBackground';
+import { R3FBackground } from './components/ui/R3FBackground';
+import { SmoothScroll } from './components/ui/SmoothScroll';
 import { TopNav } from './components/ui/TopNav';
 
 import TransactionPage from './pages/TransactionPage';
@@ -27,9 +28,10 @@ function AnimatedRoutes() {
 function App() {
   return (
     <BrowserRouter>
-      <DeepSpaceBackground />
+      <SmoothScroll />
+      <R3FBackground />
       <TopNav />
-      <main className="relative z-10 min-h-screen">
+      <main className="relative z-10 min-h-screen pt-24">
         <AnimatedRoutes />
       </main>
       <Toaster 

@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 import { motion, useMotionTemplate, useMotionValue, useSpring } from "framer-motion";
 
 export function TiltCard({ children, className }) {
@@ -6,12 +6,22 @@ export function TiltCard({ children, className }) {
   
   const x = useMotionValue(0);
   const y = useMotionValue(0);
+  const mouseX = useMotionValue(0);
+  const mouseY = useMotionValue(0);
+
+  const [isHovered, setIsHovered] = useState(false);
 
   const mouseXSpring = useSpring(x, { stiffness: 300, damping: 30 });
   const mouseYSpring = useSpring(y, { stiffness: 300, damping: 30 });
 
   const rotateX = useMotionTemplate`${mouseYSpring}deg`;
   const rotateY = useMotionTemplate`${mouseXSpring}deg`;
+  
+  const background = useMotionTemplate`radial-gradient(
+    600px circle at ${mouseX}px ${mouseY}px,
+    rgba(255, 255, 255, 0.08),
+    transparent 40%
+  )`;
 
   const handleMouseMove = (e) => {
     if (!ref.current) return;
@@ -19,18 +29,22 @@ export function TiltCard({ children, className }) {
     const width = rect.width;
     const height = rect.height;
     
-    const mouseX = e.clientX - rect.left;
-    const mouseY = e.clientY - rect.top;
+    const clientX = e.clientX - rect.left;
+    const clientY = e.clientY - rect.top;
     
-    const xPct = mouseX / width - 0.5;
-    const yPct = mouseY / height - 0.5;
+    mouseX.set(clientX);
+    mouseY.set(clientY);
     
-    // Max rotation is 10deg
-    x.set(xPct * 10);
-    y.set(yPct * -10);
+    const xPct = clientX / width - 0.5;
+    const yPct = clientY / height - 0.5;
+    
+    // Max rotation is 15deg for a deeper feel
+    x.set(xPct * 15);
+    y.set(yPct * -15);
   };
 
   const handleMouseLeave = () => {
+    setIsHovered(false);
     x.set(0);
     y.set(0);
   };
@@ -39,17 +53,25 @@ export function TiltCard({ children, className }) {
     <motion.div
       ref={ref}
       onMouseMove={handleMouseMove}
+      onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={handleMouseLeave}
       style={{
         rotateX,
         rotateY,
         transformStyle: "preserve-3d",
       }}
-      className={className}
+      className={`relative group ${className || ''}`}
     >
-      {/* Animated Border Wrapper */}
-      <div className="animated-border w-full h-full">
-        <div>{children}</div>
+      <div className="absolute inset-0 z-0 transition-opacity duration-300 pointer-events-none rounded-2xl" 
+           style={{ opacity: isHovered ? 1 : 0 }}>
+        <motion.div className="absolute inset-0 rounded-2xl" style={{ background }} />
+      </div>
+      
+      {/* Glossy inner reflection border */}
+      <div className="absolute inset-0 rounded-2xl border-[1px] border-white/5 group-hover:border-white/20 transition-colors duration-500 z-10 pointer-events-none mix-blend-overlay"></div>
+
+      <div className="relative z-20" style={{ transform: "translateZ(30px)" }}>
+        {children}
       </div>
     </motion.div>
   );
