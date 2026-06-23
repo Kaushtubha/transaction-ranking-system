@@ -7,33 +7,36 @@ export default {
   theme: {
     extend: {
       colors: {
-        background: '#030303',
-        surface: 'rgba(15, 15, 15, 0.4)',
+        background: '#04070F',
+        surface: 'rgba(7, 13, 26, 0.4)',
         primary: {
-          DEFAULT: '#3b82f6',
-          glow: 'rgba(59, 130, 246, 0.8)',
+          DEFAULT: '#A8D8F0', // Soft cyan
+          glow: 'rgba(168, 216, 240, 0.5)',
         },
         accent: {
-          DEFAULT: '#8b5cf6',
-          glow: 'rgba(139, 92, 246, 0.8)',
+          DEFAULT: '#5E40C2', // Deep indigo
+          glow: 'rgba(94, 64, 194, 0.5)',
         },
-        border: 'rgba(255, 255, 255, 0.1)',
-        muted: '#8b8b9b',
+        border: 'rgba(168, 216, 240, 0.15)', // Indigo-cyan faint border
+        muted: '#8899BB', // Muted indigo-gray
       },
       fontFamily: {
-        sans: ['Outfit', 'sans-serif'],
+        sans: ['Inter', 'sans-serif'],
         display: ['Space Grotesk', 'sans-serif'],
       },
-      backgroundImage: {
-        'grid-pattern': "url(\"data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64' width='64' height='64' fill='none' stroke='rgb(59 130 246 / 0.3)' stroke-width='2'%3e%3cpath d='M0 .5H63.5V64'/%3e%3c/svg%3e\")",
-      },
       animation: {
-        'border-spin': 'border-spin 4s linear infinite',
+        'planet-pulse': 'planet-pulse 4s ease-in-out infinite',
+        'orbit': 'orbit 20s linear infinite',
       },
       keyframes: {
-        'border-spin': {
-          '100%': { transform: 'rotate(360deg)' },
+        'planet-pulse': {
+          '0%, 100%': { transform: 'scale(1)', filter: 'brightness(1)' },
+          '50%': { transform: 'scale(1.02)', filter: 'brightness(1.2)' },
         },
+        'orbit': {
+          '0%': { transform: 'rotateX(70deg) rotateZ(0deg)' },
+          '100%': { transform: 'rotateX(70deg) rotateZ(360deg)' },
+        }
       }
     },
   },

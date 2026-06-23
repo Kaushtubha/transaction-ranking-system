@@ -1,12 +1,14 @@
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
-import { Toaster } from 'react-hot-toast';
+import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom';
 import { AnimatePresence } from 'framer-motion';
-import Dashboard from './pages/Dashboard';
-import Leaderboard from './pages/Leaderboard';
-import Cinematic3DBackground from './components/ui/Cinematic3DBackground';
-import ParticlesBackground from './components/ui/ParticlesBackground';
-import { FloatingDock } from './components/ui/FloatingDock';
+import { Toaster } from 'react-hot-toast';
+
+import { DeepSpaceBackground } from './components/ui/DeepSpaceBackground';
+import { TopNav } from './components/ui/TopNav';
+
+import TransactionPage from './pages/TransactionPage';
+import SummaryPage from './pages/SummaryPage';
+import RankingPage from './pages/Leaderboard';
 
 function AnimatedRoutes() {
   const location = useLocation();
@@ -14,8 +16,9 @@ function AnimatedRoutes() {
   return (
     <AnimatePresence mode="wait">
       <Routes location={location} key={location.pathname}>
-        <Route path="/" element={<Dashboard />} />
-        <Route path="/leaderboard" element={<Leaderboard />} />
+        <Route path="/" element={<TransactionPage />} />
+        <Route path="/summary" element={<SummaryPage />} />
+        <Route path="/ranking" element={<RankingPage />} />
       </Routes>
     </AnimatePresence>
   );
@@ -23,32 +26,29 @@ function AnimatedRoutes() {
 
 function App() {
   return (
-    <Router>
-      <Cinematic3DBackground />
-      <ParticlesBackground />
-      <div className="flex flex-col min-h-screen relative pb-32">
-        <main className="flex-1 w-full relative max-w-7xl mx-auto px-4">
-          <AnimatedRoutes />
-        </main>
-        <FloatingDock />
-      </div>
+    <BrowserRouter>
+      <DeepSpaceBackground />
+      <TopNav />
+      <main className="relative z-10 min-h-screen">
+        <AnimatedRoutes />
+      </main>
       <Toaster 
-        position="top-center" 
+        position="bottom-right" 
         toastOptions={{
           style: {
-            background: 'rgba(15, 15, 15, 0.8)',
+            background: 'rgba(7, 13, 26, 0.8)',
             backdropFilter: 'blur(16px)',
             color: '#fff',
-            border: '1px solid rgba(255, 255, 255, 0.1)',
+            border: '1px solid rgba(168, 216, 240, 0.2)',
             borderRadius: '16px',
-            boxShadow: '0 8px 32px rgba(0, 0, 0, 0.5)',
-            fontFamily: 'Outfit, sans-serif',
+            boxShadow: '0 8px 32px rgba(0, 0, 0, 0.8)',
+            fontFamily: 'Space Grotesk, sans-serif',
             fontSize: '14px',
           },
           success: {
             iconTheme: {
-              primary: '#10b981',
-              secondary: '#fff',
+              primary: '#A8D8F0',
+              secondary: '#070D1A',
             },
           },
           error: {
@@ -59,7 +59,7 @@ function App() {
           },
         }}
       />
-    </Router>
+    </BrowserRouter>
   );
 }
 
